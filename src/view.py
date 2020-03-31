@@ -11,7 +11,7 @@ def main_page():
 def  allow_click():
     return render_template('main.html',status="uploaded")
 
-@app.route('/result')
+@app.route('/resulted')
 def get_your_result():
     return render_template('main.html', status="resulted")
 
