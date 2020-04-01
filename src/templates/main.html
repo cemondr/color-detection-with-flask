@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <title>Reveal RGB Values</title>
-<form action='upload.php' method='post' enctype='multipart/form-data'>
+<form action='/' method='POST' enctype='multipart/form-data'>
     <h1>Select file to upload:</h1>
     <br>
-    <input type='file' name='fileToUpload'>
+    <input type='file' name='file'>
     <input type='submit' value='submit'>
 </form>
-{% if status == "uploaded" or status == "resulted" %} 
+{% if status == 'uploaded'%}
 <h1>There will be a photo here</h1>
+<img src = "{{img_url}}" height="32" width = "32">
 {% if status == "resulted" %}
 <h1>The value will be here</h1>
 {% endif %}
