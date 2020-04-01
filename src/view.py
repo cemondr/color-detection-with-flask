@@ -7,7 +7,8 @@ import sys
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.secret_key = os.urandom(24)
 
-uploads_dir = os.path.join(app.root_path,'static')
+#Images are static files, flask will look for them in a static folder
+uploads_dir = os.path.join(app.root_path,'static') 
 os.makedirs(uploads_dir,exist_ok=True)
 app.config['upload_dir'] = uploads_dir
 
@@ -33,6 +34,7 @@ def main_page():
 
 @app.route('/uploaded/<filename>')
 def  allow_click(filename):
+    #look for "filename" in the (designated) static folder
     img_url= url_for('static',filename=filename)
     return render_template('main.html',status="uploaded",img_url=img_url)
 
