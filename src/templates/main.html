@@ -16,6 +16,7 @@
     {% if status == 'uploaded'%}
     <h1>There will be a photo here</h1>
     <canvas id="frame"></canvas>
+    <canvas id= "solution_frame"></canvas>
     <div id="solution"></div>
 
     {% if status == "resulted" %}
@@ -29,6 +30,12 @@
         frame.width = 800;
         frame.height = 600;
         var context = frame.getContext('2d');
+
+        var solution_frame = document.getElementById('solution_frame');
+        var solution_context = solution_frame.getContext('2d');
+        solution_frame.width = 25;
+        solution_frame.height = 25;
+
         // Get the javascript to draw the image on a canvas
         function make_base(){
             base_image = new Image();
@@ -42,6 +49,8 @@
         }
         make_base();
         
+        
+
         function scale_to_fit(img){
             //get the scale
             var scale = Math.min(frame.width/img.width, frame.height/img.height);
@@ -58,6 +67,8 @@
             var context = this.getContext('2d');
             var pixel = context.getImageData(x, y, 1, 1).data; 
             var hex_value = "#" + ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+            solution_context.fillStyle = hex_value;
+            solution_context.fillRect(0,0,solution_frame.width, solution_frame.height);
             $('#solution').html(hex_value);
         });
         
