@@ -1,17 +1,74 @@
 <!DOCTYPE html>
-<title>Reveal RGB Values</title>
-<form action='/' method='POST' enctype='multipart/form-data'>
-    <h1>Select file to upload:</h1>
-    <br>
-    <input type='file' name='file'>
-    <input type='submit' value='submit'>
-</form>
-{% if status == 'uploaded'%}
-<h1>There will be a photo here</h1>
-<img src = "{{img_url}}" height="32" width = "32">
-{% if status == "resulted" %}
-<h1>The value will be here</h1>
-{% endif %}
-{% endif %}
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  
+</head>
+
+<body>
+    <title>Reveal RGB Values</title>
+    <form action='/' method='POST' enctype='multipart/form-data'>
+        <h1>Select file to upload:</h1>
+        <br>
+        <input type='file' name='file'>
+        <input type='submit' value='submit'>
+    </form>
+    {% if status == 'uploaded'%}
+    <h1>There will be a photo here</h1>
+    <canvas id="frame"></canvas>
+    <div id="solution"></div>
+
+    {% if status == "resulted" %}
+    <h1>The value will be here</h1>
+    {% endif %}
+    {% endif %}
+
+
+    <script type = text/javascript>
+        var frame = document.getElementById('frame');
+        var context = frame.getContext('2d');
+        // Get the javascript to draw the image on a canvas
+        function make_base(){
+            base_image = new Image();
+            // yay! jinga works here too.
+            var image_url = '{{img_url}}';
+            base_image.src = image_url;
+            base_image.onload = function(){
+                context.drawImage(base_image, 0, 0);
+            }
+        }
+        make_base();
+        
+        //mousemove event 
+        $('#frame').mousemove(function(e) {
+            var pos = findPos(this);
+            
+            var x = e.pageX - pos.x;
+            var y = e.pageY - pos.y;
+            var context = this.getContext('2d');
+            var pixel = context.getImageData(x, y, 1, 1).data; 
+            var hex_value = "#" + ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+            $('#solution').html(hex_value);
+        });
+        
+        //This finds the position on the canvas 
+        function findPos(obj) {
+            var cursor_left = 0, cursor_top = 0;
+            if (obj.offsetParent) {
+                do {
+                    cursor_left += obj.offsetLeft;
+                    cursor_top += obj.offsetTop;
+                } while (obj = obj.offsetParent);
+                return { x: cursor_left, y: cursor_top };
+            }
+            return undefined;
+        }
+        // Convert RGB Value To Hex Value
+        function rgbToHex(r, g, b) {
+            if (r > 255 || g > 255 || b > 255)
+                throw "Not a valid color";
+            return ((r << 16) | (g << 8) | b).toString(16);
+        }
+    </script>
+</body>
+
