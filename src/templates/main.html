@@ -26,6 +26,8 @@
 
     <script type = text/javascript>
         var frame = document.getElementById('frame');
+        frame.width = 800;
+        frame.height = 600;
         var context = frame.getContext('2d');
         // Get the javascript to draw the image on a canvas
         function make_base(){
@@ -34,11 +36,19 @@
             var image_url = '{{img_url}}';
             base_image.src = image_url;
             base_image.onload = function(){
-                context.drawImage(base_image, 0, 0);
+                //context.drawImage(base_image, 0, 0);
+                scale_to_fit(this);
             }
         }
         make_base();
         
+        function scale_to_fit(img){
+            //get the scale
+            var scale = Math.min(frame.width/img.width, frame.height/img.height);
+            var x = (frame.width/2) - (img.width/2) * scale;
+            var y = (frame.height/2) - (img.height/2) * scale;
+            context.drawImage(base_image,x,y,img.width*scale, img.height*scale);
+        }
         //mousemove event 
         $('#frame').mousemove(function(e) {
             var pos = findPos(this);
