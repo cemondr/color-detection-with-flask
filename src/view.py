@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 import sys
 import json
+import glob
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.secret_key = os.urandom(24)
@@ -18,6 +19,20 @@ def main_page():
     if request.method == 'GET':
         return render_template('main.html', status=None)
     if request.method == 'POST':
+        # clear any previously uploaded file (this is to reduce the storage)
+        # there is probably a more efficient way of doing this!
+        
+        types = ('src/static/*.jpg', 'src/static/*.jpeg', 'src/static/*.png')
+        matched_files = []
+        for files in types:
+            matched_files.extend(glob.glob(files))
+                    
+        for f in matched_files:
+            try: 
+                os.remove(f)
+            except OSError as e:
+                print("Error: %s: %s" % (f, e.strerror))
+        
         # Check if file is in the request. If not flash a message
         if 'file' not in request.files:
             flash('No file part')
