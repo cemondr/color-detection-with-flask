@@ -26,7 +26,7 @@ def main_page():
         matched_files = []
         for files in types:
             matched_files.extend(glob.glob(files))
-                    
+
         for f in matched_files:
             try: 
                 os.remove(f)
@@ -57,7 +57,3 @@ def  allow_click(filename):
 @app.route('/resulted')
 def get_your_result():
     return render_template('main.html', status="resulted")
-
-
-
-#print("eyo")
