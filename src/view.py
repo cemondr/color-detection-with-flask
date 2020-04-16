@@ -53,7 +53,3 @@ def  allow_click(filename):
     #look for "filename" in the (designated) static folder
     img_url= url_for('static',filename=filename)
     return render_template('main.html',status="uploaded",img_url=img_url)
-
-@app.route('/resulted')
-def get_your_result():
-    return render_template('main.html', status="resulted")
