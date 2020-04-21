@@ -2,7 +2,7 @@
 
 ### This web application helps user find the exact hex value of a particular (pixel) color in an uploaded image, by simply bringing the mouse over that particular pixe
 
-![readmeimage](readmeim.png)
+![readmeimage](readmeim1.png)
 
 
 - All backend implemented with Flask
